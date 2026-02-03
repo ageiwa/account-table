@@ -28,6 +28,11 @@ export const useAccountStore = defineStore('account', () => {
         }
     }
 
+    function deleteAccount(id: number) {
+        accounts.value = accounts.value
+            .filter(acc => acc.id !== id)
+    }
+
     return {
         lastId,
         accounts,
@@ -35,6 +40,7 @@ export const useAccountStore = defineStore('account', () => {
         increaseId,
         setAccounts,
         addAccount,
-        updateAccount
+        updateAccount,
+        deleteAccount
     }
 })

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import { DataTable, Column, InputText, Select } from 'primevue'
-    import CreateAccount from '@/features/CreateAccount/CreateAccount.vue'
+    import { DataTable, Column, InputText, Select, Button } from 'primevue'
     import { RECORD_TYPE_LIST } from '@/entities/Account/constants'
     import Note from '@/shared/ui/Note/Note.vue'
     import { useAccountsList } from './model'
@@ -10,6 +9,7 @@
     const {
         tableAccounts,
         addAccount,
+        delAccount,
         checkAccount,
         changeType,
         onChangeAccount
@@ -23,7 +23,10 @@
                 Учетные записи
             </span>
 
-            <CreateAccount @click="addAccount" />
+            <Button
+                icon="pi pi-plus"
+                @click="addAccount"
+            ></Button>
         </div>
 
         <Note class="accounts-list__note">
@@ -78,6 +81,16 @@
                         @blur="() => checkAccount(index)"
                         @change="onChangeAccount"
                     />
+                </template>
+            </Column>
+
+            <Column>
+                <template #body="{ data }: { data: TableAccount }">
+                    <Button
+                        icon="pi pi-trash"
+                        severity="danger"
+                        @click="() => delAccount(data.id)"
+                    ></Button>
                 </template>
             </Column>
         </DataTable>

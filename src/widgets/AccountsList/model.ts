@@ -2,6 +2,7 @@ import { ref, onMounted } from 'vue'
 import type { SelectChangeEvent } from 'primevue'
 import { useSaveAccount } from '@/features/SaveAccount/model'
 import { useGetAccount } from '@/features/GetAccount/model'
+import { useDeleteAccount } from '@/features/DeleteAccount/model'
 import { isRecordType, marksToArray, marksToString } from '@/entities/Account/utils'
 import { useAccountStore } from '@/entities/Account/store'
 import type { TableAccount } from './types'
@@ -19,6 +20,10 @@ export function useAccountsList() {
     const {
         getAccounts
     } = useGetAccount()
+
+    const {
+        deleteAccount
+    } = useDeleteAccount()
 
     const tableAccounts = ref<TableAccount[]>([])
     const wasChanged = ref(false)
@@ -113,6 +118,13 @@ export function useAccountsList() {
         accountStore.increaseId()
     }
 
+    function delAccount(id: number) {
+        tableAccounts.value = tableAccounts.value
+            .filter(acc => acc.id !== id)
+
+        deleteAccount(id)
+    }
+
     onMounted(() => {
         fillTable()
     })
@@ -120,6 +132,7 @@ export function useAccountsList() {
     return {
         tableAccounts,
         addAccount,
+        delAccount,
         changeType,
         checkAccount,
         onChangeAccount,
