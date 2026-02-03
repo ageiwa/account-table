@@ -34,9 +34,10 @@
         </Note>
         
         <DataTable class="accounts-list__table" tableStyle="min-width: 50rem" :value="tableAccounts">
-            <Column header="Метки">
+            <Column header="Метки" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
+                        class="w-full"
                         type="text"
                         :invalid="data.showMarksError"
                         v-model="data.marks"
@@ -46,9 +47,10 @@
                 </template>
             </Column>
 
-            <Column header="Тип записи">
+            <Column header="Тип записи" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <Select
+                        class="w-full"
                         placeholder="Выберите тип"
                         :options="RECORD_TYPE_LIST"
                         @change="e => changeType(e, index)"
@@ -60,9 +62,10 @@
                 </template>
             </Column>
             
-            <Column header="Логин">
+            <Column header="Логин" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
+                        class="w-full"
                         type="text"
                         :invalid="data.showLoginError"
                         v-model="data.login"
@@ -72,9 +75,10 @@
                 </template>
             </Column>
             
-            <Column header="Пароль">
+            <Column header="Пароль" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText v-if="data.password !== null"
+                        class="w-full"
                         type="password"
                         :invalid="data.showPasswordError"
                         v-model="data.password"
