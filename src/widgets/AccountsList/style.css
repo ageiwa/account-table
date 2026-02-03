@@ -1,0 +1,19 @@
+.accounts-list {
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+.accounts-list .accounts-list__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.accounts-list .header__title {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.accounts-list .accounts-list__table {
+    margin-top: 30px;
+}
