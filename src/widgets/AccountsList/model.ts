@@ -88,7 +88,7 @@ export function useAccountsList() {
         
         if (isValid && wasChanged.value) {
             saveAccount({
-                id: accountStore.lastId,
+                id: tableAccounts.value[index].id,
                 marks: marksToArray(tableAccounts.value[index].marks),
                 recordType: tableAccounts.value[index].recordType,
                 login: tableAccounts.value[index].login,
@@ -104,6 +104,8 @@ export function useAccountsList() {
     }
 
     function addAccount() {
+        accountStore.increaseId()
+
         tableAccounts.value.push({
             id: accountStore.lastId,
             marks: '',
@@ -114,8 +116,6 @@ export function useAccountsList() {
             showLoginError: false,
             showPasswordError: false
         })
-
-        accountStore.increaseId()
     }
 
     function delAccount(id: number) {
