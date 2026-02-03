@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { DataTable, Column, InputText, Select, Button } from 'primevue'
+    import { DataTable, Column, InputText, Password, Select, Button } from 'primevue'
     import { RECORD_TYPE_LIST } from '@/entities/Account/constants'
     import Note from '@/shared/ui/Note/Note.vue'
     import { useAccountsList } from './model'
@@ -77,9 +77,10 @@
             
             <Column header="Пароль" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
-                    <InputText v-if="data.password !== null"
+                    <Password v-if="data.password !== null"
                         class="w-full"
-                        type="password"
+                        toggleMask
+                        :feedback="false"
                         :invalid="data.showPasswordError"
                         v-model="data.password"
                         @blur="() => checkAccount(index)"
