@@ -14,6 +14,10 @@
     font-size: 24px;
 }
 
+.accounts-list .accounts-list__note {
+    margin-top: 10px;
+}
+
 .accounts-list .accounts-list__table {
     margin-top: 30px;
 }

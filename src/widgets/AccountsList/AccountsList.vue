@@ -2,6 +2,7 @@
     import { DataTable, Column, InputText, Select } from 'primevue'
     import CreateAccount from '@/features/CreateAccount/CreateAccount.vue'
     import { RECORD_TYPE_LIST } from '@/entities/Account/constants'
+    import Note from '@/shared/ui/Note/Note.vue'
     import { useAccountsList } from './model'
     import type { TableAccount } from './types'
     import './style.css'
@@ -24,6 +25,10 @@
 
             <CreateAccount @click="addAccount" />
         </div>
+
+        <Note class="accounts-list__note">
+            Для указания нескольких меток для одной пары логин/пароль используйте разделитель ;
+        </Note>
         
         <DataTable class="accounts-list__table" tableStyle="min-width: 50rem" :value="tableAccounts">
             <Column header="Метки">

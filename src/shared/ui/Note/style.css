@@ -1,0 +1,8 @@
+.note {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #bdd3e6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
