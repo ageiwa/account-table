@@ -1,46 +1,18 @@
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue'
     import { DataTable, Column, InputText, Select } from 'primevue'
-    import type { SelectChangeEvent } from 'primevue'
     import CreateAccount from '@/features/CreateAccount/CreateAccount.vue'
-    import { useAccountStore } from '@/entities/Account/store'
     import { RECORD_TYPE_LIST } from '@/entities/Account/constants'
-    import type { Mark } from '@/entities/Account/types'
+    import { useAccountsList } from './model'
+    import type { TableAccount } from './types'
     import './style.css'
 
-    const accountStore = useAccountStore()
-
-    const marks = ref<string[]>([])
-
-    function formatOutputMarks(mark: Mark[]) {
-        return mark
-            .map(mark => mark.text)
-            .join('; ')
-    }
-
-    function changeMarks(index: number) {
-        if (!marks.value[index]) {
-            return
-        }
-
-        let accountMarks = marks.value[index]
-            .split(';')
-            .filter(mark => mark.trim() !== '')
-            .map(mark => ({ text: mark.trim() }))
-
-        accountStore.setMark(index, accountMarks)
-        marks.value[index] = formatOutputMarks(accountMarks)
-    }
-
-    function changeType(e: SelectChangeEvent, index: number) {
-        accountStore.setRecordType(index, e.value)
-    }
-
-    onMounted(() => {
-        marks.value = accountStore.accounts.map(account => {
-            return formatOutputMarks(account.marks)
-        })
-    })
+    const {
+        tableAccounts,
+        addAccount,
+        checkAccount,
+        changeType,
+        onChangeAccount
+    } = useAccountsList()
 </script>
 
 <template>
@@ -50,48 +22,56 @@
                 Учетные записи
             </span>
 
-            <CreateAccount />
+            <CreateAccount @click="addAccount" />
         </div>
         
-        <DataTable class="accounts-list__table" tableStyle="min-width: 50rem" :value="accountStore.accounts">
+        <DataTable class="accounts-list__table" tableStyle="min-width: 50rem" :value="tableAccounts">
             <Column header="Метки">
-                <template #body="{ index }">
+                <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
                         type="text"
-                        v-model="marks[index]"
-                        @change="() => changeMarks(index)"
+                        :invalid="data.showMarksError"
+                        v-model="data.marks"
+                        @blur="() => checkAccount(index)"
+                        @change="onChangeAccount"
                     />
                 </template>
             </Column>
 
             <Column header="Тип записи">
-                <template #body="{ index }">
+                <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <Select
                         placeholder="Выберите тип"
                         :options="RECORD_TYPE_LIST"
                         @change="e => changeType(e, index)"
                     >
                         <template #value>
-                            {{ accountStore.accounts[index]?.recordType }}
+                            {{ data.recordType }}
                         </template>
                     </Select>
                 </template>
             </Column>
             
             <Column header="Логин">
-                <template #body="slotProps">
+                <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
                         type="text"
-                        :value="slotProps.data.login"
+                        :invalid="data.showLoginError"
+                        v-model="data.login"
+                        @blur="() => checkAccount(index)"
+                        @change="onChangeAccount"
                     />
                 </template>
             </Column>
             
             <Column header="Пароль">
-                <template #body="slotProps">
-                    <InputText
+                <template #body="{ data, index }: { data: TableAccount, index: number }">
+                    <InputText v-if="data.password !== null"
                         type="password"
-                        :value="slotProps.data.password"
+                        :invalid="data.showPasswordError"
+                        v-model="data.password"
+                        @blur="() => checkAccount(index)"
+                        @change="onChangeAccount"
                     />
                 </template>
             </Column>

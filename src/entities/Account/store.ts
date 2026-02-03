@@ -1,35 +1,40 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Account, RecordType, Mark } from './types'
+import type { Account } from './types'
 
 export const useAccountStore = defineStore('account', () => {
+    const lastId = ref(0)
     const accounts = ref<Account[]>([])
 
-    function addAccount() {
-        accounts.value.push({
-            marks: [],
-            recordType: 'Локальная',
-            login: '',
-            password: ''
-        })
+    function setLastId(value: number) {
+        lastId.value = value
     }
 
-    function setMark(index: number, value: Mark[]) {
-        if (accounts.value[index]) {
-            accounts.value[index].marks = value
-        }
+    function increaseId() {
+        lastId.value++
     }
 
-    function setRecordType(index: number, value: RecordType) {
+    function setAccounts(value: Account[]) {
+        accounts.value = value
+    }
+
+    function addAccount(account: Account) {
+        accounts.value.push(account)
+    }
+
+    function updateAccount(index: number, account: Account) {
         if (accounts.value[index]) {
-            accounts.value[index].recordType = value
+            accounts.value[index] = account
         }
     }
 
     return {
+        lastId,
         accounts,
+        setLastId,
+        increaseId,
+        setAccounts,
         addAccount,
-        setMark,
-        setRecordType
+        updateAccount
     }
 })

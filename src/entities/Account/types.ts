@@ -5,6 +5,7 @@ export type Mark = {
 }
 
 export type Account = {
+    id: number
     marks: Mark[]
     recordType: RecordType
     login: string
