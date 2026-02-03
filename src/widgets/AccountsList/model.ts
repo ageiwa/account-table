@@ -1,4 +1,5 @@
 import { ref, onMounted } from 'vue'
+import { useToast } from 'primevue'
 import type { SelectChangeEvent } from 'primevue'
 import { useSaveAccount } from '@/features/SaveAccount/model'
 import { useGetAccount } from '@/features/GetAccount/model'
@@ -8,8 +9,11 @@ import { useAccountStore } from '@/entities/Account/store'
 import type { TableAccount } from './types'
 
 export function useAccountsList() {
+    const TOAST_LIFE = 3000
+    const toast = useToast()
+
     const accountStore = useAccountStore()
-    
+
     const {
         marksIsValid,
         loginIsValid,
@@ -74,7 +78,7 @@ export function useAccountsList() {
         }
 
         tableAccounts.value[index].showLoginError = !loginIsValid(tableAccounts.value[index].login)
-        
+
         if (tableAccounts.value[index].password !== null) {
             tableAccounts.value[index].showPasswordError = !passwordIsValid(tableAccounts.value[index].password)
         }
@@ -85,7 +89,7 @@ export function useAccountsList() {
         const isValid = !tableAccounts.value[index].showMarksError
             && !tableAccounts.value[index].showLoginError
             && !tableAccounts.value[index].showPasswordError
-        
+
         if (isValid && wasChanged.value) {
             saveAccount({
                 id: tableAccounts.value[index].id,
@@ -93,6 +97,12 @@ export function useAccountsList() {
                 recordType: tableAccounts.value[index].recordType,
                 login: tableAccounts.value[index].login,
                 password: tableAccounts.value[index].password,
+            })
+
+            toast.add({
+                summary: 'Запись сохранена',
+                severity: 'success',
+                life: TOAST_LIFE
             })
         }
 
@@ -123,6 +133,12 @@ export function useAccountsList() {
             .filter(acc => acc.id !== id)
 
         deleteAccount(id)
+
+        toast.add({
+            summary: 'Запись удалена',
+            severity: 'success',
+            life: TOAST_LIFE
+        })
     }
 
     onMounted(() => {

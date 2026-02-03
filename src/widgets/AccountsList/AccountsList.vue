@@ -37,7 +37,6 @@
             <Column header="Метки" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
-                        class="w-full"
                         type="text"
                         :invalid="data.showMarksError"
                         v-model="data.marks"
@@ -50,7 +49,6 @@
             <Column header="Тип записи" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <Select
-                        class="w-full"
                         placeholder="Выберите тип"
                         :options="RECORD_TYPE_LIST"
                         @change="e => changeType(e, index)"
@@ -65,7 +63,6 @@
             <Column header="Логин" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <InputText
-                        class="w-full"
                         type="text"
                         :invalid="data.showLoginError"
                         v-model="data.login"
@@ -78,7 +75,6 @@
             <Column header="Пароль" style="width: 25%;">
                 <template #body="{ data, index }: { data: TableAccount, index: number }">
                     <Password v-if="data.password !== null"
-                        class="w-full"
                         toggleMask
                         :feedback="false"
                         :invalid="data.showPasswordError"
